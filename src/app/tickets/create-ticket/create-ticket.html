@@ -1,1 +1,54 @@
-<p>create-ticket works!</p>
+<header class="header">
+  <h1>Cadastro de Ticket</h1>
+
+  <div class="user-area">
+    <span class="user-name">Olá, Usuário!</span>
+    <i class="fa-solid fa-circle-user"></i>
+  </div>
+</header>
+<!-- Conteúdo -->
+<main class="content">
+  <div class="card">
+    <h2>Novo Ticket</h2>
+
+    <form class="form">
+      <div class="form-group">
+        <label for="nome">Nome do Ticket: *</label>
+        <input type="text" id="nome" name="nome" placeholder="Ex: Proteção Perimetral" />
+      </div>
+
+      <div class="form-group">
+        <label for="descricao">Descrição do Ticket: *</label>
+        <input type="text" id="descricao" placeholder="Ex: Instalação de 4 sensores IR" />
+      </div>
+
+      <div class="form-group">
+        <label for="endereco">Endereço do Ticket: *</label>
+        <input type="text" id="endereco" placeholder="Ex: Endereço da Instalação" />
+      </div>
+
+      <div class="form-group">
+        <label for="status">Status do Ticket: *</label>
+        <select id="status">
+          <option>Selecione</option>
+          <option>Pendente</option>
+          <option>Andamento</option>
+          <option>Concluído</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="ativo">Status Ticket: ativado/desativado:</label>
+        <select id="ativo">
+          <option>Ativado</option>
+          <option>Desativado</option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">Salvar</button>
+        <button type="button" class="btn-secondary">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</main>
