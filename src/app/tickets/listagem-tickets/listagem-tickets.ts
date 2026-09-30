@@ -3,10 +3,11 @@ import { TicketService } from '../ticket-service';
 import { Observable } from 'rxjs';
 import { DadosTicket } from '../dados-ticket';
 import { PageResult } from '../../common/pagination/page-result';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-listagem-tickets',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './listagem-tickets.html',
   styleUrl: './listagem-tickets.scss',
 })

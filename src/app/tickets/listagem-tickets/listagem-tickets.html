@@ -1,1 +1,56 @@
-<p>listagem-tickets works!</p>
+<header class="header">
+    <h1>Meus Tickets</h1>
+
+    <div class="user-area">
+        <span class="user-name">Olá, Usuário!</span>
+        <i class="fa-solid fa-circle-user"></i>
+    </div>
+</header>
+
+<main class="content">
+    <div class="card-full">
+        <h2>Listagem de Tickets</h2>
+        <div class="table-card">
+
+            @if(listagem$ | async; as listagem){
+            <table class="datatable">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Endereço</th>
+                        <th>Status</th>
+                        <th>Ativo</th>
+                        <th class="text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (ticket of listagem.content; track ticket.id) {
+                    <tr>
+                        <td>{{ ticket.nome }}</td>
+                        <td>{{ ticket.descricao }}</td>
+                        <td>{{ ticket.endereco }}</td>
+                        <td>{{ ticket.status }}</td>
+                        <td>
+                            <span class="badge badge-warning">Inativo</span>
+                        </td>
+                        <td class="text-center">
+                            <button class="icon-btn">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button class="icon-btn danger">
+                                <i class="fa-solid fa-ban"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+
+            }
+        </div>
+
+    </div>
+
+</main>

@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { Template } from './template/template';
 import { CreateTicket } from './tickets/create-ticket/create-ticket';
+import { ListagemTickets } from './tickets/listagem-tickets/listagem-tickets';
 
 export const routes: Routes = [
   {
@@ -11,6 +12,10 @@ export const routes: Routes = [
         path: 'create-ticket',
         component: CreateTicket,
       },
+      {
+        path: 'listagem-tickets',
+        component: ListagemTickets,
+      }
     ],
   },
 ];
