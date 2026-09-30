@@ -11,37 +11,37 @@
   <div class="card">
     <h2>Novo Ticket</h2>
 
-    <form class="form">
+    <form [formGroup]="form" (ngSubmit)="handleSubmit()" class="form">
       <div class="form-group">
         <label for="nome">Nome do Ticket: *</label>
-        <input type="text" id="nome" name="nome" placeholder="Ex: Proteção Perimetral" />
+        <input formControlName="nome" type="text" id="nome" name="nome" placeholder="Ex: Proteção Perimetral" />
       </div>
 
       <div class="form-group">
         <label for="descricao">Descrição do Ticket: *</label>
-        <input type="text" id="descricao" placeholder="Ex: Instalação de 4 sensores IR" />
+        <input formControlName="descricao" type="text" id="descricao" placeholder="Ex: Instalação de 4 sensores IR" />
       </div>
 
       <div class="form-group">
         <label for="endereco">Endereço do Ticket: *</label>
-        <input type="text" id="endereco" placeholder="Ex: Endereço da Instalação" />
+        <input formControlName="endereco" type="text" id="endereco" placeholder="Ex: Endereço da Instalação" />
       </div>
 
       <div class="form-group">
         <label for="status">Status do Ticket: *</label>
-        <select id="status">
-          <option>Selecione</option>
-          <option>Pendente</option>
-          <option>Andamento</option>
-          <option>Concluído</option>
+        <select formControlName="status" id="status">
+          <option value="">Selecione</option>
+          <option value="PENDENTE">Pendente</option>
+          <option value="ANDAMENTO">Andamento</option>
+          <option value="CONCLUIDO">Concluído</option>
         </select>
       </div>
 
       <div class="form-group">
         <label for="ativo">Status Ticket: ativado/desativado:</label>
-        <select id="ativo">
-          <option>Ativado</option>
-          <option>Desativado</option>
+        <select formControlName="ativo" id="ativo">
+          <option value="true">Ativado</option>
+          <option value="false">Desativado</option>
         </select>
       </div>
 
