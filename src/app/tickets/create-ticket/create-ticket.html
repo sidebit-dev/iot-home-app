@@ -15,16 +15,41 @@
       <div class="form-group">
         <label for="nome">Nome do Ticket: *</label>
         <input formControlName="nome" type="text" id="nome" name="nome" placeholder="Ex: Proteção Perimetral" />
+        @if (form.controls.nome.hasError('required') && form.controls.nome.touched) {
+        <span class="form-hint form-hint-error">O nome do ticket é obrigatório.</span>
+        }
+        @if (form.controls.nome.hasError('apiError')) {
+        <span class="form-hint form-hint-error">
+          {{ form.get('nome')?.errors?.['apiError'] }}
+        </span>
+        }
       </div>
 
       <div class="form-group">
         <label for="descricao">Descrição do Ticket: *</label>
         <input formControlName="descricao" type="text" id="descricao" placeholder="Ex: Instalação de 4 sensores IR" />
+        @if (form.controls.descricao.hasError('required') && form.controls.descricao.touched) {
+        <span class="form-hint form-hint-error">A descrição do ticket é obrigatória.</span>
+        }
+        @if (form.controls.descricao.hasError('apiError')) {
+        <span class="form-hint form-hint-error">
+          {{ form.get('descricao')?.errors?.['apiError'] }}
+        </span>
+        }
       </div>
 
       <div class="form-group">
         <label for="endereco">Endereço do Ticket: *</label>
         <input formControlName="endereco" type="text" id="endereco" placeholder="Ex: Endereço da Instalação" />
+
+        @if (form.controls.endereco.hasError('required') && form.controls.endereco.touched) {
+        <span class="form-hint form-hint-error">O endereço do ticket é obrigatório.</span>
+        }
+        @if (form.controls.endereco.hasError('apiError')) {
+        <span class="form-hint form-hint-error">
+          {{ form.get('endereco')?.errors?.['apiError'] }}
+        </span>
+        }
       </div>
 
       <div class="form-group">
@@ -35,6 +60,15 @@
           <option value="ANDAMENTO">Andamento</option>
           <option value="CONCLUIDO">Concluído</option>
         </select>
+
+        @if (form.controls.status.hasError('required') && form.controls.status.touched) {
+        <span class="form-hint form-hint-error">O status do ticket é obrigatório.</span>
+        }
+        @if (form.controls.status.hasError('apiError')) {
+        <span class="form-hint form-hint-error">
+          {{ form.get('status')?.errors?.['apiError'] }}
+        </span>
+        }
       </div>
 
       <div class="form-group">
@@ -43,6 +77,15 @@
           <option value="true">Ativado</option>
           <option value="false">Desativado</option>
         </select>
+
+        @if (form.controls.ativo.hasError('required') && form.controls.ativo.touched) {
+        <span class="form-hint form-hint-error">Ativado ou desativado é obrigatório.</span>
+        }
+        @if (form.controls.ativo.hasError('apiError')) {
+        <span class="form-hint form-hint-error">
+          {{ form.get('ativo')?.errors?.['apiError'] }}
+        </span>
+        }
       </div>
 
       <div class="form-actions">

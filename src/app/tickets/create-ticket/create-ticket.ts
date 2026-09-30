@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { TicketService } from '../ticket-service';
 import { DadosTicket, DadosTicketForm } from '../dados-ticket';
 import { ValidationErrorResponse } from '../../common/validation/validation-error-model';
+import { CommonModule } from '@angular/common';
 
 interface CreateTicketForm {
   nome: FormControl<string>;
@@ -14,7 +15,7 @@ interface CreateTicketForm {
 
 @Component({
   selector: 'app-create-ticket',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './create-ticket.html',
   styleUrl: './create-ticket.scss',
 })
@@ -32,8 +33,20 @@ export class CreateTicket implements OnInit {
     });
   }
 
+  isFormInvalid(): boolean {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return true;
+    }
+    return false;
+
+  }
+
   handleSubmit(): void {
-    console.log(this.form.value);
+    if (this.isFormInvalid()) {
+      return;
+    }
+  
     const dadosTicket = this.form.value as DadosTicketForm;
     this.service.createTicket(dadosTicket).subscribe({
       next: (response: DadosTicket) => { console.log('Ticket criado com sucesso:', response); },
