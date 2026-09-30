@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { TicketService } from '../ticket-service';
+import { DadosTicket, DadosTicketForm } from '../dados-ticket';
 
 interface CreateTicketForm{
   nome: FormControl<string>;
@@ -17,6 +19,7 @@ interface CreateTicketForm{
 })
 export class CreateTicket implements OnInit {
   form!: FormGroup<CreateTicketForm>;
+  service = inject(TicketService);
 
   ngOnInit(): void {
     this.form = new FormGroup<CreateTicketForm>({
@@ -31,6 +34,11 @@ export class CreateTicket implements OnInit {
   handleSubmit(): void {
     if (this.form.valid) {
       console.log(this.form.value);
+      const dadosTicket = this.form.value as DadosTicketForm;
+      this.service.createTicket(dadosTicket).subscribe({
+        next: (response: DadosTicket) => {console.log('Ticket criado com sucesso:', response);},
+        error: (error) => {console.error('Erro ao criar ticket:', error);}
+      });
     } else {
       console.log('Formulário inválido');
     }
