@@ -25,10 +25,10 @@ export class TicketService {
     return this.http.get<DadosTicket>(url);
   }
 
-  // updateTicket(id: number, dados: DadosTicketForm): Observable<DadosTicket> {
-  //   const url = `${this.baseUrl}/${id}`;
-  //   return this.http.put<DadosTicket>(url, dados);
-  // }
+  updateTicket(id: number, dados: DadosTicketForm): Observable<void> {
+    const url = `${this.baseUrl}/${id}`;
+    return this.http.put<void>(url, dados);
+  }
 
   // deleteTicket(id: number): Observable<void> {
   //   const url = `${this.baseUrl}/${id}`;

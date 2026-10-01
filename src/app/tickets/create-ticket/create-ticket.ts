@@ -6,6 +6,7 @@ import { ValidationErrorResponse } from '../../common/validation/validation-erro
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 
 interface CreateTicketForm {
   nome: FormControl<string>;
@@ -79,10 +80,16 @@ export class CreateTicket implements OnInit {
     }
 
     const dadosTicket = this.form.value as DadosTicketForm;
-    this.service.createTicket(dadosTicket).subscribe({
-      next: (response: DadosTicket) => {
-        console.log('Ticket criado com sucesso:', response);
-        this.toast.success('Ticket criado/atualizado com sucesso!', 'Sucesso');
+
+    const requisicao: Observable<DadosTicket | void> = this.idTicketParaEdicao ?
+      this.service.updateTicket(this.idTicketParaEdicao, dadosTicket) :
+      this.service.createTicket(dadosTicket);
+
+
+    requisicao.subscribe({
+      next: (response) => {
+        // console.log('Ticket criado com sucesso:', response);
+        this.toast.success('Ticket cadastrado/atualizado com sucesso!', 'Sucesso');
         this.form.reset();
       },
       error: (error) => this.onApiError(error)
