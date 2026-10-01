@@ -15,19 +15,50 @@ export class ListagemTickets implements OnInit {
 
   service = inject(TicketService);
   listagem$!: Observable<PageResult<DadosTicket>>;
-  pageNumber = 0;
-  pageSize = 10;
+  paginaAtual = 0;
+  tamanhoPagina = 5;
 
   ngOnInit(): void {
     this.listarTickets();
   }
 
-  listarTickets(): void {
-    this.listagem$ = this.service.findAll(this.pageNumber, this.pageSize);
+  listarTickets() {
+    this.listagem$ = this.service.findAll(this.paginaAtual, this.tamanhoPagina);
   }
 
-  navegarPagina(pagina: number): void {
-    this.pageNumber = pagina;
+  navegar(pagina: number) {
+    this.paginaAtual = pagina;
     this.listarTickets();
+  }
+
+  navegarProximo(listagem: PageResult<DadosTicket>) {
+    if (!listagem.last) {
+      this.navegar(listagem.number + 1);
+    }
+  }
+
+  navegarAnterior(listagem: PageResult<DadosTicket>) {
+    if (!listagem.first) {
+      this.navegar(listagem.number - 1);
+    }
+  }
+
+  paginas(totalPages: number): number[] {
+    return Array.from({ length: totalPages }, (valor, i) => i);
+  }
+
+  registroInicial(listagem: PageResult<DadosTicket>) {
+    if (listagem.totalElements === 0) {
+      return 0;
+    }
+
+    return listagem.number * listagem.size + 1;
+  }
+
+  registroFinal(listagem: PageResult<DadosTicket>) {
+    if (listagem.totalElements === 0) {
+      return 0;
+    }
+    return Math.min((listagem.number + 1) * listagem.size, listagem.totalElements);
   }
 }

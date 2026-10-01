@@ -2,8 +2,8 @@ export interface PageResult<T> {
   content: T[];
   totalElements: number;
   totalPages: number;
-  pageNumber: number;
-  pageSize: number;
+  number: number;
+  size: number;
   first: boolean;
   last: boolean;
 }
