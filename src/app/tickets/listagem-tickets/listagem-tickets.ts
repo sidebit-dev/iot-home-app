@@ -5,6 +5,7 @@ import { DadosTicket } from '../dados-ticket';
 import { PageResult } from '../../common/pagination/page-result';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-listagem-tickets',
@@ -16,6 +17,7 @@ export class ListagemTickets implements OnInit {
 
   service = inject(TicketService);
   router = inject(Router);
+  toast = inject(ToastrService);
   listagem$!: Observable<PageResult<DadosTicket>>;
   paginaAtual = 0;
   tamanhoPagina = 5;
@@ -68,4 +70,11 @@ export class ListagemTickets implements OnInit {
     // console.log(`Preparando edição do ticket com ID: ${id}`);
     this.router.navigate(['/paginas/create-ticket'], { queryParams: { id: idTicket } });
   }
-}
+
+  ativaDesativa(idTicket: number) {
+    this.service.ativaDesativa(idTicket).subscribe(next => {
+      this.toast.success('Ticket ativado/desativado com sucesso!', 'Sucesso'),
+      this.listarTickets();
+    });
+  }
+} 

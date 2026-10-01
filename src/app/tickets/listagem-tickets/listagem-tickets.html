@@ -41,7 +41,7 @@
                                 (click)="prepararEdicao(ticket.id)">
                                 <i class="fa-solid fa-pen"></i>
                             </button>
-                            <button class="icon-btn" [ngClass]="ticket.ativo ? 'danger' : 'success'" (click)="null">
+                            <button class="icon-btn" [ngClass]="ticket.ativo ? 'danger' : 'success'" (click)="ativaDesativa(ticket.id)" [attr.title]="ticket.ativo ? 'Desativar' : 'Ativar' ">
                                 <i class="fa-solid" [ngClass]="ticket.ativo ? 'fa-ban' : 'fa-check'"></i>
                             </button>
                         </td>
