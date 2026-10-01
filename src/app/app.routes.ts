@@ -13,7 +13,7 @@ export const routes: Routes = [
         component: CreateTicket,
       },
       {
-        path: 'listagem-tickets',
+        path: 'list-tickets',
         component: ListagemTickets,
       }
     ],

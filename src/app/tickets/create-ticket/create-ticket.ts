@@ -5,6 +5,7 @@ import { DadosTicket, DadosTicketForm } from '../dados-ticket';
 import { ValidationErrorResponse } from '../../common/validation/validation-error-model';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute } from '@angular/router';
 
 interface CreateTicketForm {
   nome: FormControl<string>;
@@ -22,8 +23,10 @@ interface CreateTicketForm {
 })
 export class CreateTicket implements OnInit {
   form!: FormGroup<CreateTicketForm>;
+  rotaAtiva = inject(ActivatedRoute);
   service = inject(TicketService);
   toast = inject(ToastrService);
+  idTicketParaEdicao?: number;
 
   ngOnInit(): void {
     this.form = new FormGroup<CreateTicketForm>({
@@ -33,6 +36,31 @@ export class CreateTicket implements OnInit {
       status: new FormControl('', { nonNullable: true, validators: Validators.required }),
       ativo: new FormControl(true, { nonNullable: true, validators: Validators.required }),
     });
+
+    this.carregarTicketParaEdicao();
+  }
+
+  carregarTicketParaEdicao() {
+    this.idTicketParaEdicao = Number(this.rotaAtiva.snapshot.queryParamMap.get('id'));
+
+    if (!this.idTicketParaEdicao) {
+      return;
+    }
+
+    this.service
+      .findById(this.idTicketParaEdicao)
+      .subscribe({
+        next: (ticket) => {
+          this.form.patchValue({
+            nome: ticket.nome,
+            descricao: ticket.descricao,
+            endereco: ticket.endereco,
+            status: ticket.status,
+            ativo: ticket.ativo,
+          })
+        },
+        error: () => { this.toast.error('Ocorreu um erro ao carregar o ticket para edição.') }
+      })
   }
 
   isFormInvalid(): boolean {
@@ -52,8 +80,8 @@ export class CreateTicket implements OnInit {
 
     const dadosTicket = this.form.value as DadosTicketForm;
     this.service.createTicket(dadosTicket).subscribe({
-      next: (response: DadosTicket) => { 
-        console.log('Ticket criado com sucesso:', response); 
+      next: (response: DadosTicket) => {
+        console.log('Ticket criado com sucesso:', response);
         this.toast.success('Ticket criado/atualizado com sucesso!', 'Sucesso');
         this.form.reset();
       },

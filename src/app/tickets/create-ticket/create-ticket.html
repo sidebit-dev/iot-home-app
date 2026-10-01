@@ -9,7 +9,7 @@
 <!-- Conteúdo -->
 <main class="content">
   <div class="card">
-    <h2>Novo Ticket</h2>
+    <h2>{{ idTicketParaEdicao ? 'Editar Ticket' : 'Novo Ticket' }}</h2>
 
     <form [formGroup]="form" (ngSubmit)="handleSubmit()" class="form">
       <div class="form-group">
@@ -89,7 +89,7 @@
       </div>
 
       <div class="form-actions">
-        <button type="submit" class="btn-primary">Salvar</button>
+        <button type="submit" class="btn-primary">{{ idTicketParaEdicao ? 'Atualizar' : 'Salvar' }}</button>
         <button type="button" class="btn-secondary">Cancelar</button>
       </div>
     </form>

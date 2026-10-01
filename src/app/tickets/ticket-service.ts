@@ -19,4 +19,19 @@ export class TicketService {
     const url = `${this.baseUrl}?page=${page}&size=${size}`;
     return this.http.get<PageResult<DadosTicket>>(url);
   }
+
+  findById(id: number): Observable<DadosTicket> {
+    const url = `${this.baseUrl}/${id}`;
+    return this.http.get<DadosTicket>(url);
+  }
+
+  // updateTicket(id: number, dados: DadosTicketForm): Observable<DadosTicket> {
+  //   const url = `${this.baseUrl}/${id}`;
+  //   return this.http.put<DadosTicket>(url, dados);
+  // }
+
+  // deleteTicket(id: number): Observable<void> {
+  //   const url = `${this.baseUrl}/${id}`;
+  //   return this.http.delete<void>(url);
+  // }
 }

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { DadosTicket } from '../dados-ticket';
 import { PageResult } from '../../common/pagination/page-result';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-listagem-tickets',
@@ -14,6 +15,7 @@ import { CommonModule } from '@angular/common';
 export class ListagemTickets implements OnInit {
 
   service = inject(TicketService);
+  router = inject(Router);
   listagem$!: Observable<PageResult<DadosTicket>>;
   paginaAtual = 0;
   tamanhoPagina = 5;
@@ -60,5 +62,10 @@ export class ListagemTickets implements OnInit {
       return 0;
     }
     return Math.min((listagem.number + 1) * listagem.size, listagem.totalElements);
+  }
+
+  prepararEdicao(idTicket: number) {
+    // console.log(`Preparando edição do ticket com ID: ${id}`);
+    this.router.navigate(['/paginas/create-ticket'], { queryParams: { id: idTicket } });
   }
 }
