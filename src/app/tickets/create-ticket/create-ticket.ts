@@ -5,7 +5,7 @@ import { DadosTicket, DadosTicketForm } from '../dados-ticket';
 import { ValidationErrorResponse } from '../../common/validation/validation-error-model';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 
 interface CreateTicketForm {
@@ -18,7 +18,7 @@ interface CreateTicketForm {
 
 @Component({
   selector: 'app-create-ticket',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './create-ticket.html',
   styleUrl: './create-ticket.scss',
 })
@@ -91,6 +91,7 @@ export class CreateTicket implements OnInit {
         // console.log('Ticket criado com sucesso:', response);
         this.toast.success('Ticket cadastrado/atualizado com sucesso!', 'Sucesso');
         this.form.reset();
+        this.idTicketParaEdicao = undefined;
       },
       error: (error) => this.onApiError(error)
     });

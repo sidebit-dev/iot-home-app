@@ -4,12 +4,12 @@ import { Observable } from 'rxjs';
 import { DadosTicket } from '../dados-ticket';
 import { PageResult } from '../../common/pagination/page-result';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-listagem-tickets',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './listagem-tickets.html',
   styleUrl: './listagem-tickets.scss',
 })

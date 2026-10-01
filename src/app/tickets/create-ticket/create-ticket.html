@@ -90,7 +90,11 @@
 
       <div class="form-actions">
         <button type="submit" class="btn-primary">{{ idTicketParaEdicao ? 'Atualizar' : 'Salvar' }}</button>
-        <button type="button" class="btn-secondary">Cancelar</button>
+        <button type="button" 
+        class="btn-secondary" 
+        [routerLink]="['/paginas/list-tickets']">
+          Cancelar
+        </button>
       </div>
     </form>
   </div>
