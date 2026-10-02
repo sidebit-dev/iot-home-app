@@ -6,10 +6,11 @@ import { PageResult } from '../../common/pagination/page-result';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Header } from '../../common/components/header/header';
 
 @Component({
   selector: 'app-listagem-tickets',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, Header],
   templateUrl: './listagem-tickets.html',
   styleUrl: './listagem-tickets.scss',
 })

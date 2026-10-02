@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
+import { Header } from '../../common/components/header/header';
 
 interface CreateTicketForm {
   nome: FormControl<string>;
@@ -18,7 +19,11 @@ interface CreateTicketForm {
 
 @Component({
   selector: 'app-create-ticket',
-  imports: [ReactiveFormsModule, CommonModule, RouterModule],
+  imports: [
+    ReactiveFormsModule, 
+    CommonModule, 
+    RouterModule,
+    Header],
   templateUrl: './create-ticket.html',
   styleUrl: './create-ticket.scss',
 })
