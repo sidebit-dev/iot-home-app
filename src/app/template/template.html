@@ -2,14 +2,26 @@
   <!-- Sidebar -->
   <aside class="sidebar">
     <div class="sidebar-logo">
-      <i class="fa-solid fa-wallet"></i>
-      <span>IOTHome APP</span>
+      <i class="fa-solid fa-house-lock"></i>
+      <span>IOTHome</span>
     </div>
 
     <nav class="sidebar-menu">
       <a class="menu-item active" [routerLink]="['/paginas/list-tickets']">
-        <i class="fa-solid fa-credit-card"></i>
+        <i class="fa-solid fa-sliders"></i>
+        <span>Dashboard</span>
+      </a>
+      <a class="menu-item" [routerLink]="['/paginas/list-tickets']">
+        <i class="fa-solid fa-ticket"></i>
         <span>Tickets</span>
+      </a>
+      <a class="menu-item" [routerLink]="['/paginas/list-tickets']">
+        <i class="fa-solid fa-sign-hanging"></i>
+        <span>Sensors</span>
+      </a>
+      <a class="menu-item" [routerLink]="['/paginas/list-tickets']">
+        <i class="fa-solid fa-list-ul"></i>
+        <span>Event Log</span>
       </a>
     </nav>
   </aside>
