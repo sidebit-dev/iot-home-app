@@ -1,0 +1,71 @@
+<app-header [titulo]="'Lista de Sensores'"></app-header>
+<main class="content">
+    <div class="card-full">
+        <button class="btn-secondary" type="button" [routerLink]="['/paginas/create-sensor']">
+            <i class="fa-solid fa-plus"></i>
+            Cadastrar Novo
+        </button>
+        <h2>Lista de Sensores</h2>
+        <div class="table-card">
+
+            @if(listagem$ | async; as listagem){
+            <table class="datatable">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Status</th>
+                        <th>Ativo</th>
+                        <th class="text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (ticket of listagem.content; track ticket.id) {
+                    <tr>
+                        <td>{{ ticket.nome }}</td>
+                        <td>{{ ticket.descricao }}</td>
+                        <td>{{ ticket.status }}</td>
+                        <td>
+                            <span class="badge" [ngClass]="ticket.ativo ? 'badge-success' : 'badge-warning'">
+                                {{ ticket.ativo ? 'Ativo' : 'Inativo' }}
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <button class="icon-btn" title="Editar" (click)="prepararEdicao(ticket.id)">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button class="icon-btn" [ngClass]="ticket.ativo ? 'danger' : 'success'"
+                                (click)="ativaDesativa(ticket.id)"
+                                [attr.title]="ticket.ativo ? 'Desativar' : 'Ativar' ">
+                                <i class="fa-solid" [ngClass]="ticket.ativo ? 'fa-ban' : 'fa-check'"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+            <!-- Paginação -->
+            <div class="table-footer">
+                <span>Mostrando {{ registroInicial(listagem) }} - {{ registroFinal(listagem) }} de {{
+                    listagem.totalElements }} registros
+                </span>
+
+                <div class="pagination">
+                    <button class="page-btn" [class.disabled]="listagem.first" (click)="navegarAnterior(listagem);">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    @for (pagina of paginas(listagem.totalPages); track pagina) {
+                    <button class="page-btn" [class.active]="pagina === listagem.number" (click)="navegar(pagina)">
+                        {{ pagina + 1 }}
+                    </button>
+                    }
+                    <button class="page-btn" [class.disabled]="listagem.last" (click)="navegarProximo(listagem);">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</main>

@@ -30,7 +30,7 @@ export class TicketService {
     return this.http.put<void>(url, dados);
   }
 
-    ativaDesativa(id: number): Observable<void> {
+  ativaDesativa(id: number): Observable<void> {
     const url = `${this.baseUrl}/${id}/ativo`;
     return this.http.patch<void>(url, null);
   }
