@@ -12,7 +12,6 @@ import { Header } from '../../common/components/header/header';
 interface CreateSensorForm {
   nome: FormControl<string>;
   descricao: FormControl<string>;
-  endereco: FormControl<string>;
   status: FormControl<string>;
   ativo: FormControl<boolean | null>;
 }
@@ -38,7 +37,6 @@ export class CreateSensor implements OnInit {
     this.form = new FormGroup<CreateSensorForm>({
       nome: new FormControl('', { nonNullable: true, validators: Validators.required }),
       descricao: new FormControl('', { nonNullable: true, validators: Validators.required }),
-      endereco: new FormControl('', { nonNullable: true, validators: Validators.required }),
       status: new FormControl('', { nonNullable: true, validators: Validators.required }),
       ativo: new FormControl(true, { nonNullable: true, validators: Validators.required }),
     });

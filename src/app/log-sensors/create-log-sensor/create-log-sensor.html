@@ -1,0 +1,61 @@
+<app-header [titulo]="'Cadastro de Log de Sensores'"></app-header>
+<!-- Conteúdo -->
+<main class="content">
+  <div class="card">
+    <h2>{{ idLogSensorParaEdicao ? 'Editar Sensor' : 'Novo Log de Sensor' }}</h2>
+
+    <form [formGroup]="form" (ngSubmit)="handleSubmit()" class="form">
+
+      <div class="form-group">
+        <label for="status">Status do Sensor: *</label>
+        <select formControlName="status" id="status">
+          <option value="">Selecione</option>
+          <option value="NORMAL">NORMAL</option>
+          <option value="ALARME">ALARME</option>
+        </select>
+
+        @if (form.controls.status.hasError('required') && form.controls.status.touched) {
+        <span class="form-hint form-hint-error">O status do sensor é obrigatório.</span>
+        }
+        @if (form.controls.status.hasError('apiError')) {
+        <span class="form-hint form-hint-error">
+          {{ form.get('status')?.errors?.['apiError'] }}
+        </span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="description">Descrição do Sensor: *</label>
+        <input formControlName="description" type="text" id="description" placeholder="Ex: Instalação de 4 sensores IR" />
+        @if (form.controls.description.hasError('required') && form.controls.description.touched) {
+        <span class="form-hint form-hint-error">A descrição do sensor é obrigatória.</span>
+        }
+        @if (form.controls.description.hasError('apiError')) {
+        <span class="form-hint form-hint-error">
+          {{ form.get('description')?.errors?.['apiError'] }}
+        </span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="sensor_id">Número do Sensor: *</label>
+        <input formControlName="sensor_id" type="text" id="sensor_id" placeholder="Ex: Número do sensor" />
+        @if (form.controls.sensor_id.hasError('required') && form.controls.sensor_id.touched) {
+        <span class="form-hint form-hint-error">O número do sensor é obrigatório.</span>
+        }
+        @if (form.controls.sensor_id.hasError('apiError')) {
+        <span class="form-hint form-hint-error">
+          {{ form.get('sensor_id')?.errors?.['apiError'] }}
+        </span>
+        }
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">{{ idLogSensorParaEdicao ? 'Atualizar' : 'Salvar' }}</button>
+        <button type="button" class="btn-secondary" [routerLink]="['/paginas/list-log-sensors']">
+          Voltar
+        </button>
+      </div>
+    </form>
+  </div>
+</main>

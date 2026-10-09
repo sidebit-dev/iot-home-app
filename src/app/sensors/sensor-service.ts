@@ -12,6 +12,7 @@ export class SensorService {
   baseUrl = 'http://localhost:3333/sensors';
 
   createSensor(dados: DadosSensorForm): Observable<DadosSensor> {
+    console.log('Dados enviados para criação do sensor:', dados);
     return this.http.post<DadosSensor>(this.baseUrl, dados);
   }
 
