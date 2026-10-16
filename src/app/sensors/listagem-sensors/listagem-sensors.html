@@ -1,12 +1,41 @@
-  <app-header [titulo]="'Lista de Sensores'"></app-header>
+<app-header [titulo]="'Lista de Sensores'"></app-header>
 <main class="content">
     <div class="card-full">
         <button class="btn-secondary" type="button" [routerLink]="['/paginas/create-sensor']">
             <i class="fa-solid fa-plus"></i>
             Cadastrar Novo
         </button>
-        <h2>Lista de Sensores</h2>
+
         <div class="table-card">
+            <form [formGroup]="form" class="form" (ngSubmit)="aplicarFiltros()">
+                <div class="filtros-grid">
+                    <div class="form-group filtro-col">
+                        <label for="status">Status</label>
+                        <select id="status" formControlName="status">
+                            <option value="">Selecione...</option>
+                            <option value="NORMAL">NORMAL</option>
+                            <option value="ALARME">ALARME</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group filtro-col">
+                        <label for="ticket_id">Ticket</label>
+                        <select id="ticket_id" formControlName="ticket_id">
+                            <option value="">Selecione...</option>
+                            @for (ticket of tickets; track ticket.id) {
+                            <option [value]="ticket.id">{{ ticket.nome }}</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions filtros-actions">
+                    <button type="submit" class="btn-primary">Filtrar</button>
+                    <button type="button" (click)="limparFiltros()" class="btn-secondary">
+                        Limpar
+                    </button>
+                </div>
+
+            </form>
 
             @if(listagem$ | async; as listagem){
             <table class="datatable">
@@ -20,24 +49,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for (ticket of listagem.content; track ticket.id) {
+                    @for (sensor of listagem.content; track sensor.id) {
                     <tr>
-                        <td>{{ ticket.nome }}</td>
-                        <td>{{ ticket.descricao }}</td>
-                        <td>{{ ticket.status }}</td>
+                        <td>{{ sensor.nome }}</td>
+                        <td>{{ sensor.descricao }}</td>
+                        <td>{{ sensor.status }}</td>
                         <td>
-                            <span class="badge" [ngClass]="ticket.ativo ? 'badge-success' : 'badge-warning'">
-                                {{ ticket.ativo ? 'Ativo' : 'Inativo' }}
+                            <span class="badge" [ngClass]="sensor.ativo ? 'badge-success' : 'badge-warning'">
+                                {{ sensor.ativo ? 'Ativo' : 'Inativo' }}
                             </span>
                         </td>
                         <td class="text-center">
-                            <button class="icon-btn" title="Editar" (click)="prepararEdicao(ticket.id)">
+                            <button class="icon-btn" title="Editar" (click)="prepararEdicao(sensor.id)">
                                 <i class="fa-solid fa-pen"></i>
                             </button>
-                            <button class="icon-btn" [ngClass]="ticket.ativo ? 'danger' : 'success'"
-                                (click)="ativaDesativa(ticket.id)"
-                                [attr.title]="ticket.ativo ? 'Desativar' : 'Ativar' ">
-                                <i class="fa-solid" [ngClass]="ticket.ativo ? 'fa-ban' : 'fa-check'"></i>
+                            <button class="icon-btn" [ngClass]="sensor.ativo ? 'danger' : 'success'"
+                                (click)="ativaDesativa(sensor.id)"
+                                [attr.title]="sensor.ativo ? 'Desativar' : 'Ativar' ">
+                                <i class="fa-solid" [ngClass]="sensor.ativo ? 'fa-ban' : 'fa-check'"></i>
+                            </button>
+                            <button class="icon-btn danger" title="Excluir" (click)="deletar(sensor.id)">
+                                <i class="fa-solid fa-trash"></i>
                             </button>
                         </td>
                     </tr>

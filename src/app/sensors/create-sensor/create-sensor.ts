@@ -1,19 +1,21 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { SensorService } from '../sensor-service';
-import { DadosSensor, DadosSensorForm } from '../dados-sensor';
+import { DadosSensor, DadosSensorForm, StatusSensor } from '../dados-sensor';
 import { ValidationErrorResponse } from '../../common/validation/validation-error-model';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { Header } from '../../common/components/header/header';
+import { DadosTicket } from '../../tickets/dados-ticket';
 
 interface CreateSensorForm {
   nome: FormControl<string>;
   descricao: FormControl<string>;
-  status: FormControl<string>;
-  ativo: FormControl<boolean | null>;
+  status: FormControl<StatusSensor |''>;
+  // ativo: FormControl<boolean | null>;
+  ticket_id: FormControl<number>;
 }
 
 @Component({
@@ -33,15 +35,43 @@ export class CreateSensor implements OnInit {
   toast = inject(ToastrService);
   idSensorParaEdicao?: number;
 
+  ticketsDisponiveis: DadosTicket[] = [];
+
   ngOnInit(): void {
     this.form = new FormGroup<CreateSensorForm>({
-      nome: new FormControl('', { nonNullable: true, validators: Validators.required }),
-      descricao: new FormControl('', { nonNullable: true, validators: Validators.required }),
-      status: new FormControl('', { nonNullable: true, validators: Validators.required }),
-      ativo: new FormControl(true, { nonNullable: true, validators: Validators.required }),
+      ticket_id: new FormControl<number>(0, { nonNullable: true, validators: Validators.required }),
+      nome: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
+      descricao: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
+      status: new FormControl<StatusSensor | ''>('', { nonNullable: true, validators: Validators.required }),
+      // ativo: new FormControl(true, { nonNullable: true, validators: Validators.required }),
     });
-
+    
+    this.inicializarDropDowns();
     this.carregarSensorParaEdicao();
+  }
+
+  // EM VEZ DISSO VAMOS FAZER CHAMADAS ENCADEADAS PARA PEGAR OS TICKETS DISPONIVEIS PARA O SENSOR, POIS O USUARIO PODE TER CRIADO UM TICKET E NAO TER FEITO O REFRESH DA PAGINA
+  // inicializarTicketsDisponiveis() {
+  //   this.service.listarTicketsDisponiveis().subscribe({
+  //     next: (tickets) => {
+  //       this.ticketsDisponiveis = tickets;
+  //     },
+  //     error: () => {
+  //       this.toast.error('Ocorreu um erro ao carregar os tickets disponíveis.', 'Erro');
+  //     }
+  //   });
+  // }
+  inicializarDropDowns(){
+    forkJoin({
+      tickets: this.service.listarTicketsDisponiveis()
+    }).subscribe({
+      next: ({ tickets }) => {
+        this.ticketsDisponiveis = tickets;
+      },
+      error: () => {
+        this.toast.error('Ocorreu um erro ao carregar os dados para o formulário.', 'Erro');
+      }
+    }); 
   }
 
   carregarSensorParaEdicao() {
@@ -59,7 +89,7 @@ export class CreateSensor implements OnInit {
             nome: sensor.nome,
             descricao: sensor.descricao,
             status: sensor.status,
-            ativo: sensor.ativo,
+            // ativo: sensor.ativo,
           })
         },
         error: () => { this.toast.error('Ocorreu um erro ao carregar o sensor para edição.') }
@@ -76,10 +106,11 @@ export class CreateSensor implements OnInit {
 
   }
 
-  handleSubmit(): void {
+  handleSubmit(): void {   
     if (this.isFormInvalid()) {
       return;
     }
+    //  console.log('Formulário enviado:', this.form.value);
 
     const dadosSensor = this.form.value as DadosSensorForm;
 

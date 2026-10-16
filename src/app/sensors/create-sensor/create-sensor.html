@@ -11,7 +11,7 @@
         @if (form.controls.nome.hasError('required') && form.controls.nome.touched) {
         <span class="form-hint form-hint-error">O nome do sensor é obrigatório.</span>
         }
-        @if (form.controls.nome.hasError('apiError')) {
+        @if (form.controls.nome.hasError('apiError') && form.controls.nome.touched) {
         <span class="form-hint form-hint-error">
           {{ form.get('nome')?.errors?.['apiError'] }}
         </span>
@@ -24,7 +24,7 @@
         @if (form.controls.descricao.hasError('required') && form.controls.descricao.touched) {
         <span class="form-hint form-hint-error">A descrição do sensor é obrigatória.</span>
         }
-        @if (form.controls.descricao.hasError('apiError')) {
+        @if (form.controls.descricao.hasError('apiError') && form.controls.descricao.touched) {
         <span class="form-hint form-hint-error">
           {{ form.get('descricao')?.errors?.['apiError'] }}
         </span>
@@ -42,7 +42,7 @@
         @if (form.controls.status.hasError('required') && form.controls.status.touched) {
         <span class="form-hint form-hint-error">O status do sensor é obrigatório.</span>
         }
-        @if (form.controls.status.hasError('apiError')) {
+        @if (form.controls.status.hasError('apiError') && form.controls.status.touched) {
         <span class="form-hint form-hint-error">
           {{ form.get('status')?.errors?.['apiError'] }}
         </span>
@@ -50,18 +50,25 @@
       </div>
 
       <div class="form-group">
-        <label for="ativo">Status Sensor: ativado/desativado:</label>
-        <select formControlName="ativo" id="ativo">
-          <option value="true">Ativado</option>
-          <option value="false">Desativado</option>
+        <label for="ticket_id">Ticket: *</label>
+        <select formControlName="ticket_id" id="ticket_id">
+          <option value=0>Selecione...</option>
+          <!-- <option *ngFor="let ticket of ticketsDisponiveis" [value]="ticket.id">
+            {{ ticket.nome }}
+          </option> -->
+          @for (ticket of ticketsDisponiveis; track ticket.id) {
+            <option [value]="ticket.id">
+              {{ ticket.nome }}
+            </option>
+          }
         </select>
 
-        @if (form.controls.ativo.hasError('required') && form.controls.ativo.touched) {
-        <span class="form-hint form-hint-error">Ativado ou desativado é obrigatório.</span>
+        @if (form.controls.ticket_id.hasError('required') && form.controls.ticket_id.touched) {
+        <span class="form-hint form-hint-error">O ticket é obrigatório.</span>
         }
-        @if (form.controls.ativo.hasError('apiError')) {
+        @if (form.controls.ticket_id.hasError('apiError') && form.controls.ticket_id.touched) {
         <span class="form-hint form-hint-error">
-          {{ form.get('ativo')?.errors?.['apiError'] }}
+          {{ form.get('ticket_id')?.errors?.['apiError'] }}
         </span>
         }
       </div>

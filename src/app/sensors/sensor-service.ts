@@ -1,8 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { DadosSensor, DadosSensorForm } from './dados-sensor';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { DadosSensor, DadosSensorForm, FiltroSensor } from './dados-sensor';
 import { Observable } from 'rxjs';
 import { PageResult } from '../common/pagination/page-result';
+import { DadosTicket } from '../tickets/dados-ticket';
 
 @Injectable({
   providedIn: 'root',
@@ -16,9 +17,34 @@ export class SensorService {
     return this.http.post<DadosSensor>(this.baseUrl, dados);
   }
 
+  listarTicketsDisponiveis(): Observable<DadosTicket[]> {
+    const url = `${this.baseUrl}/tickets-disponiveis`;
+    return this.http.get<DadosTicket[]>(url);
+  }
+
   findAll(page: number = 0, size: number = 10): Observable<PageResult<DadosSensor>> {
     const url = `${this.baseUrl}?page=${page}&size=${size}`;
     return this.http.get<PageResult<DadosSensor>>(url);
+  }
+
+  listar(filtros: FiltroSensor): Observable<PageResult<DadosSensor>> {
+    let params = new HttpParams();
+    if (filtros.status) {
+      params = params.set('status', filtros.status);
+    }
+    if (filtros.ticket_id) {
+      params = params.set('ticket_id', filtros.ticket_id.toString());
+    }
+    let page = filtros.page !== undefined ? filtros.page : 0;
+    let size = filtros.size !== undefined ? filtros.size : 10;
+    params = params.set('page', page.toString()).set('size', size.toString());
+
+    return this.http.get<PageResult<DadosSensor>>(this.baseUrl, { params });
+  }
+
+  listarTicketsParaFiltrar(): Observable<DadosTicket[]> {
+    const url = 'http://localhost:3333/sensors-filtro';
+    return this.http.get<DadosTicket[]>(url);
   }
 
   findById(id: number): Observable<DadosSensor> {
