@@ -62,8 +62,8 @@ export class SensorService {
     return this.http.patch<void>(url, null);
   }
 
-  // deleteSensor(id: number): Observable<void> {
-  //   const url = `${this.baseUrl}/${id}`;
-  //   return this.http.delete<void>(url);
-  // }
+  deleteSensor(id: number): Observable<void> {
+    const url = `${this.baseUrl}-filtro/${id}`;
+    return this.http.delete<void>(url);
+  }
 }

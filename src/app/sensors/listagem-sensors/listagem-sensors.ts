@@ -78,8 +78,16 @@ export class ListagemSensors implements OnInit {
   }
 
   deletar(id: number): void {
-    // Implementar a lógica de exclusão do sensor aqui
-    console.log(`Deletando sensor com ID: ${id}`);
+    this.service.deleteSensor(id).subscribe({
+      next: () => {
+        this.toast.success('Sensor deletado com sucesso!', 'Sucesso');
+        this.listarSensors();
+      },
+      error: () => {
+        this.toast.error('Erro ao deletar sensor', 'Erro');
+      }
+    });
+    // console.log(`Deletando sensor com ID: ${id}`);
   }
 
   navegar(pagina: number): void {
