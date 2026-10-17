@@ -12,7 +12,7 @@
                     <div class="form-group filtro-col">
                         <label for="status">Status</label>
                         <select id="status" formControlName="status">
-                            <option value="">Selecione...</option>
+                            <option value="">Todos</option>
                             <option value="NORMAL">NORMAL</option>
                             <option value="ALARME">ALARME</option>
                         </select>
@@ -21,7 +21,7 @@
                     <div class="form-group filtro-col">
                         <label for="ticket_id">Ticket</label>
                         <select id="ticket_id" formControlName="ticket_id">
-                            <option value="">Selecione...</option>
+                            <option value="">Todos</option>
                             @for (ticket of tickets; track ticket.id) {
                             <option [value]="ticket.id">{{ ticket.nome }}</option>
                             }

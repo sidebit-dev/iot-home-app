@@ -33,17 +33,17 @@ export class SensorService {
       params = params.set('status', filtros.status);
     }
     if (filtros.ticket_id) {
-      params = params.set('ticket_id', filtros.ticket_id.toString());
+      params = params.set('ticket_id', filtros.ticket_id);
     }
-    let page = filtros.page !== undefined ? filtros.page : 0;
-    let size = filtros.size !== undefined ? filtros.size : 10;
-    params = params.set('page', page.toString()).set('size', size.toString());
-
-    return this.http.get<PageResult<DadosSensor>>(this.baseUrl, { params });
+    let page = filtros.page ?? 0;
+    let size = filtros.size ?? 10;
+    params = params.set('page', page).set('size', size);
+    const url = `${this.baseUrl}-filtro`;
+    return this.http.get<PageResult<DadosSensor>>(url, { params: params });
   }
 
   listarTicketsParaFiltrar(): Observable<DadosTicket[]> {
-    const url = 'http://localhost:3333/sensors-filtro';
+    const url = 'http://localhost:3333/sensors-filtro/tickets-listagem';
     return this.http.get<DadosTicket[]>(url);
   }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { SensorService } from '../sensor-service';
 import { Observable } from 'rxjs';
-import { DadosSensor } from '../dados-sensor';
+import { DadosSensor, StatusSensor } from '../dados-sensor';
 import { PageResult } from '../../common/pagination/page-result';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
@@ -11,8 +11,8 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DadosTicket } from '../../tickets/dados-ticket';
 
 interface FiltrosForm {
-  status: FormControl<string>;
-  ticket_id: FormControl<number | '' >;
+  status: FormControl<StatusSensor | ''>;
+  ticket_id: FormControl<number | ''>;
 }
 
 @Component({
@@ -35,13 +35,13 @@ export class ListagemSensors implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup<FiltrosForm>({
-      status: new FormControl('', { nonNullable: true }),
-      ticket_id: new FormControl('', { nonNullable: true }),
+      status: new FormControl<StatusSensor | ''>('', { nonNullable: true }),
+      ticket_id: new FormControl<number | ''>('', { nonNullable: true }),
     });
 
-    this.listarSensors();
     this.listarTicketsFiltro();
-    
+    this.listarSensors();   
+
   }
 
   listarSensors() {
@@ -56,16 +56,8 @@ export class ListagemSensors implements OnInit {
     });
   }
 
-  listarTicketsFiltro() {
-    this.service.listarTicketsParaFiltrar().subscribe({
-      next: (resultado: DadosTicket[]) => {
-        this.tickets = resultado;
-      },
-      error: () => this.toast.error('Erro ao listar tickets para filtro', 'Erro')
-    });
-  }
-
   aplicarFiltros() {
+    console.log('Filtros aplicados:', this.form.value);
     this.paginaAtual = 0; // Resetar para a primeira página ao aplicar filtros
     this.listarSensors();
   }
@@ -76,17 +68,26 @@ export class ListagemSensors implements OnInit {
     // this.listarSensors();
   }
 
+  listarTicketsFiltro() {
+    this.service.listarTicketsParaFiltrar().subscribe({
+      next: (resultado: DadosTicket[]) => {
+        this.tickets = resultado;
+      },
+      error: () => this.toast.error('Erro ao carregar tickets para filtro', 'Erro')
+    });
+  }
+
   deletar(id: number): void {
     // Implementar a lógica de exclusão do sensor aqui
     console.log(`Deletando sensor com ID: ${id}`);
   }
 
-  navegar(pagina: number) {
+  navegar(pagina: number): void {
     this.paginaAtual = pagina;
     this.listarSensors();
   }
 
-  navegarProximo(listagem: PageResult<DadosSensor>) {
+  navegarProximo(listagem: PageResult<DadosSensor>): void {
     if (!listagem.last) {
       this.navegar(listagem.number + 1);
     }
@@ -99,10 +100,10 @@ export class ListagemSensors implements OnInit {
   }
 
   paginas(totalPages: number): number[] {
-    return Array.from({ length: totalPages }, (valor, i) => i);
+    return Array.from({ length: totalPages }, (_valor, i) => i);
   }
 
-  registroInicial(listagem: PageResult<DadosSensor>) {
+  registroInicial(listagem: PageResult<DadosSensor>): number {
     if (listagem.totalElements === 0) {
       return 0;
     }
@@ -110,7 +111,7 @@ export class ListagemSensors implements OnInit {
     return listagem.number * listagem.size + 1;
   }
 
-  registroFinal(listagem: PageResult<DadosSensor>) {
+  registroFinal(listagem: PageResult<DadosSensor>): number {
     if (listagem.totalElements === 0) {
       return 0;
     }
