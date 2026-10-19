@@ -1,0 +1,94 @@
+<app-header titulo="Dashboard"></app-header>
+<main class="content">
+
+  @if(dashboard$ | async; as dashboard){
+
+  <section class="dashboard-grid">
+    <div class="metric-card metric-card-balance">
+      <span class="metric-label">Sensores Normais</span>
+      <strong [ngClass]="dashboard.resumo.sensoresNormais >= 0 ? 'metric-positive' : 'metric-negative'">
+        {{dashboard.resumo.sensoresNormais}}
+      </strong>
+      <small>{{dashboard.mes}}</small>
+    </div>
+
+    <div class="metric-card">
+      <span class="metric-label">Sensores Totais</span>
+      <strong class="metric-positive">{{dashboard.resumo.sensoresTotais}}</strong>
+      <small>{{dashboard.mes}}</small>
+    </div>
+
+    <div class="metric-card">
+      <span class="metric-label">Sensores Atuados</span>
+      <strong class="metric-negative">{{dashboard.resumo.sensoresAtuados}}</strong>
+      <small>{{dashboard.mes}}</small>
+    </div>
+  </section>
+
+  <section class="charts-grid">
+    <div class="chart-panel">
+
+      <div class="chart-header">
+        <h2>Total de Sensores x Sensores Atuados</h2>
+        <span>{{dashboard.mes}}</span>
+      </div>
+
+      <div class="comparison-chart">
+        <div class="comparison-row">
+          <div class="comparison-label">
+            <span>Sensores Totais</span>
+            <strong>{{dashboard.resumo.sensoresTotais}}</strong>
+          </div>
+
+          <div class="bar-track">
+            <div class="bar-fill income"
+              [style.width.%]="percentual(dashboard.resumo.sensoresTotais,dashboard.resumo.sensoresTotais + dashboard.resumo.sensoresAtuados)">
+            </div>
+          </div>
+
+        </div>
+
+        <div class="comparison-row">
+          <div class="comparison-label">
+            <span>Sensores Atuados</span>
+            <strong>{{dashboard.resumo.sensoresAtuados}}</strong>
+          </div>
+
+          <div class="bar-track">
+            <div class="bar-fill expense"
+              [style.width.%]="percentual(dashboard.resumo.sensoresAtuados,dashboard.resumo.sensoresTotais + dashboard.resumo.sensoresAtuados)">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <div class="chart-panel">
+      <div class="chart-header">
+        <h2>Ticket(s) com Sensore(s) Atuado(s)</h2>
+        <span>{{dashboard.mes}}</span>
+      </div>
+
+      @if(dashboard.atuadosPorTickets.length){
+      <div class="category-chart">
+        @for(alarme of dashboard.atuadosPorTickets; track alarme.ticket){
+        <div class="category-row">
+          <div class="category-label">
+            <span>{{alarme.ticket}}</span>
+            <!-- <strong>{{alarme.ticket}}</strong> -->
+          </div>
+        </div>
+        }
+      </div>
+      } @else{
+      <div class="empty-state">
+        <i class="fa-solid fa-chart-pie"></i>
+        <span>Nenhum Sensor Atuado (Alarme).</span>
+      </div>
+      }
+    </div>
+  </section>
+  }
+</main>
