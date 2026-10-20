@@ -53,7 +53,8 @@
                     <tr>
                         <td>{{ sensor.nome }}</td>
                         <td>{{ sensor.descricao }}</td>
-                        <td>{{ sensor.status }}</td>
+                        <td [ngClass]="sensor.status === 'NORMAL' ? 'normal' : 'anormal'">{{ sensor.status }}</td>
+                        <td>{{sensor.dataCadastro| date:'dd/MM/yyyy HH:mm:ss'}}</td>
                         <td>
                             <span class="badge" [ngClass]="sensor.ativo ? 'badge-success' : 'badge-warning'">
                                 {{ sensor.ativo ? 'Ativo' : 'Inativo' }}

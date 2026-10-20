@@ -1,9 +1,12 @@
 <app-header [titulo]="'Lista de Eventos'"></app-header>
 <main class="content">
     <div class="card-full">
-        <button class="btn-secondary" type="button" [routerLink]="['/paginas/create-log-sensor']">
+        <button class="btn-secondary" type="button" [routerLink]="['/paginas/create-event']">
             <i class="fa-solid fa-plus"></i>
-            Cadastrar Novo
+            Evento TESTE
+        </button>
+        <button class="btn-danger" title="Excluir" (click)="excluirSelecionados()">
+            <i class="fa-solid fa-trash"></i> Excluir TODOS
         </button>
         <h2>Lista de Eventos</h2>
         <div class="table-card">
@@ -12,28 +15,28 @@
             <table class="datatable">
                 <thead>
                     <tr>
-                        <th>Status</th>
-                        <th>Descrição</th>
-                        <th>Instante</th>
-                        <th class="text-center">Ações</th>
+                        <th><b>Status</b></th>
+                        <th><b>Descrição</b></th>
+                        <th><b>Instante</b></th>
+                        <th class="text-right">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     @for (event of listagem.content; track event.id) {
                     <tr>
-                        <td>{{ event.status }}</td>
+                        <td [ngClass]="event.status === 'NORMAL' ? 'normal' : 'anormal'">{{ event.status }}</td>
+
                         <td>{{ event.description }}</td>
-                        <!-- <td>{{ event.dataEvento| date: 'dd/MM/yyyy HH:mm:ss' }}</td> -->
-                          <td>{{ event.dataEvento| date:'dd/MM/yyyy HH:mm:ss'}}</td>
-                        <td class="text-center">
+                        <td>{{ event.dataEvento| date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                        <td class="text-right">
                             <button class="icon-btn" title="Editar" (click)="prepararEdicao(event.id)">
                                 <i class="fa-solid fa-pen"></i>
                             </button>
-                            <!-- <button class="icon-btn" [ngClass]="event.ativo ? 'danger' : 'success'"
-                                (click)="ativaDesativa(event.id)"
-                                [attr.title]="event.ativo ? 'Desativar' : 'Ativar' ">
-                                <i class="fa-solid" [ngClass]="event.ativo ? 'fa-ban' : 'fa-check'"></i>
-                            </button> -->
+                            <button class="icon-btn danger" title="Excluir" (click)="deletar(event.id)">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                            <input type="checkbox" checked display="none"
+                                (change)="onAlternarSelecao(event.id, $event)">
                         </td>
                     </tr>
                     }
@@ -45,7 +48,6 @@
                 <span>Mostrando {{ registroInicial(listagem) }} - {{ registroFinal(listagem) }} de {{
                     listagem.totalElements }} registros
                 </span>
-
                 <div class="pagination">
                     <button class="page-btn" [class.disabled]="listagem.first" (click)="navegarAnterior(listagem);">
                         <i class="fa-solid fa-chevron-left"></i>

@@ -15,6 +15,7 @@ export class DadosSensor {
     status!: StatusSensor;
     ativo!: boolean;
     ticket_id!: number;
+    dataCadastro!: Date;
 }
 
 export class FiltroSensor{

@@ -1,10 +1,10 @@
-export class DadosLogSensorForm {
+export class DadosEventForm {
     status!: string;
     description!: string;
     sensor_id!: string;
 }
 
-export class DadosLogSensor {
+export class DadosEvent {
     id!: number;
     status!: string;
     description!: string;

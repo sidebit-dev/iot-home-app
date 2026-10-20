@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { LogSensorService } from '../log-sensor-service';
-import { DadosLogSensor, DadosLogSensorForm } from '../dados-log-sensor';
+import { EventService } from '../events-service';
+import { DadosEvent, DadosEventForm } from '../dados-events';
 import { ValidationErrorResponse } from '../../common/validation/validation-error-model';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
@@ -9,7 +9,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Header } from '../../common/components/header/header';
 
-interface CreateLogSensorForm {
+interface CreateEventForm {
   status: FormControl<string>;
   description: FormControl<string>;
   sensor_id: FormControl<string>;
@@ -22,18 +22,18 @@ interface CreateLogSensorForm {
     CommonModule,
     RouterModule,
     Header],
-  templateUrl: './create-log-sensor.html',
-  styleUrl: './create-log-sensor.scss',
+  templateUrl: './create-event.html',
+  styleUrl: './create-event.scss',
 })
-export class CreateLogSensor implements OnInit {
-  form!: FormGroup<CreateLogSensorForm>;
+export class CreateEvent implements OnInit {
+  form!: FormGroup<CreateEventForm>;
   rotaAtiva = inject(ActivatedRoute);
-  service = inject(LogSensorService);
+  service = inject(EventService);
   toast = inject(ToastrService);
-  idLogSensorParaEdicao?: number;
+  idEventParaEdicao?: number;
 
   ngOnInit(): void {
-    this.form = new FormGroup<CreateLogSensorForm>({
+    this.form = new FormGroup<CreateEventForm>({
       status: new FormControl('', { nonNullable: true, validators: Validators.required }),
       description: new FormControl('', { nonNullable: true, validators: Validators.required }),
       sensor_id: new FormControl('', { nonNullable: true, validators: Validators.required })
@@ -43,14 +43,14 @@ export class CreateLogSensor implements OnInit {
   }
 
   carregarLogSensorParaEdicao() {
-    this.idLogSensorParaEdicao = Number(this.rotaAtiva.snapshot.queryParamMap.get('id'));
+    this.idEventParaEdicao = Number(this.rotaAtiva.snapshot.queryParamMap.get('id'));
 
-    if (!this.idLogSensorParaEdicao) {
+    if (!this.idEventParaEdicao) {
       return;
     }
 
     this.service
-      .findById(this.idLogSensorParaEdicao)
+      .findById(this.idEventParaEdicao)
       .subscribe({
         next: (event) => {
           this.form.patchValue({
@@ -71,7 +71,6 @@ export class CreateLogSensor implements OnInit {
       return true;
     }
     return false;
-
   }
 
   handleSubmit(): void {
@@ -79,10 +78,10 @@ export class CreateLogSensor implements OnInit {
       return;
     }
 
-    const dadosLogSensor = this.form.value as DadosLogSensorForm;
+    const dadosLogSensor = this.form.value as DadosEventForm;
 
-    const requisicao: Observable<DadosLogSensor | void> = this.idLogSensorParaEdicao ?
-      this.service.update(this.idLogSensorParaEdicao, dadosLogSensor) :
+    const requisicao: Observable<DadosEvent | void> = this.idEventParaEdicao ?
+      this.service.update(this.idEventParaEdicao, dadosLogSensor) :
       this.service.create(dadosLogSensor);
 
 
@@ -91,7 +90,7 @@ export class CreateLogSensor implements OnInit {
         // console.log('Log Sensor criado com sucesso:', response);
         this.toast.success('Sensor cadastrado/atualizado com sucesso!', 'Sucesso');
         this.form.reset();
-        this.idLogSensorParaEdicao = undefined;
+        this.idEventParaEdicao = undefined;
       },
       error: (error) => this.onApiError(error)
     });
@@ -114,7 +113,7 @@ export class CreateLogSensor implements OnInit {
       return;
     }
     this.toast.error('Ocorreu um erro ao criar o log do sensor. Por favor, tente novamente mais tarde.', 'Erro');
-    console.error('Erro ao criar o log do sensor:', response.error);
+    console.error('Erro ao criar o Event do sensor:', response.error);
   }
 }
 

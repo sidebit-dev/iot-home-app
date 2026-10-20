@@ -1,8 +1,8 @@
-<app-header [titulo]="'Cadastro de Log de Sensores'"></app-header>
+<app-header [titulo]="'EVENTO TESTE'"></app-header>
 <!-- Conteúdo -->
 <main class="content">
   <div class="card">
-    <h2>{{ idLogSensorParaEdicao ? 'Editar Sensor' : 'Novo Log de Sensor' }}</h2>
+    <h2>{{ idEventParaEdicao ? 'Editar Sensor' : 'Novo Evento Teste' }}</h2>
 
     <form [formGroup]="form" (ngSubmit)="handleSubmit()" class="form">
 
@@ -26,7 +26,8 @@
 
       <div class="form-group">
         <label for="description">Descrição do Sensor: *</label>
-        <input formControlName="description" type="text" id="description" placeholder="Ex: Instalação de 4 sensores IR" />
+        <input formControlName="description" type="text" id="description"
+          placeholder="Ex: Instalação de 4 sensores IR" />
         @if (form.controls.description.hasError('required') && form.controls.description.touched) {
         <span class="form-hint form-hint-error">A descrição do sensor é obrigatória.</span>
         }
@@ -51,8 +52,8 @@
       </div>
 
       <div class="form-actions">
-        <button type="submit" class="btn-primary">{{ idLogSensorParaEdicao ? 'Atualizar' : 'Salvar' }}</button>
-        <button type="button" class="btn-secondary" [routerLink]="['/paginas/list-log-sensors']">
+        <button type="submit" class="btn-primary">{{ idEventParaEdicao ? 'Atualizar' : 'Salvar' }}</button>
+        <button type="button" class="btn-secondary" [routerLink]="['/paginas/list-events']">
           Voltar
         </button>
       </div>
