@@ -2,13 +2,11 @@
 
 <main class="content">
     <div class="card-full">
-        <button class="btn-secondary" 
-        type="button" 
-        [routerLink]="['/paginas/create-ticket']">
-        <i class="fa-solid fa-plus"></i>
+        <button class="btn-secondary" type="button" [routerLink]="['/paginas/create-ticket']">
+            <i class="fa-solid fa-plus"></i>
             Cadastrar Novo
         </button>
-  
+
         <h2>Lista de Serviços</h2>
         <div class="table-card">
 
@@ -37,12 +35,13 @@
                             </span>
                         </td>
                         <td class="text-center">
-                            <button class="icon-btn" title="Editar"
-                                (click)="prepararEdicao(ticket.id)">
-                                <i class="fa-solid fa-pen"></i>
-                            </button>
-                            <button class="icon-btn" [ngClass]="ticket.ativo ? 'danger' : 'success'" (click)="ativaDesativa(ticket.id)" [attr.title]="ticket.ativo ? 'Desativar' : 'Ativar' ">
+                            <button class="icon-btn" [ngClass]="ticket.ativo ? 'danger' : 'success'"
+                                (click)="ativaDesativa(ticket.id)"
+                                [attr.title]="ticket.ativo ? 'Desativar' : 'Ativar' ">
                                 <i class="fa-solid" [ngClass]="ticket.ativo ? 'fa-ban' : 'fa-check'"></i>
+                            </button>
+                            <button class="icon-btn" title="Editar" (click)="prepararEdicao(ticket.id)">
+                                <i class="fa-solid fa-pen"></i>
                             </button>
                         </td>
                     </tr>
@@ -57,7 +56,7 @@
                 </span>
 
                 <div class="pagination">
-                    <button class="page-btn" [class.disabled]="listagem.first" (click)="navegarAnterior(listagem);" >
+                    <button class="page-btn" [class.disabled]="listagem.first" (click)="navegarAnterior(listagem);">
                         <i class="fa-solid fa-chevron-left"></i>
                     </button>
                     @for (pagina of paginas(listagem.totalPages); track pagina) {
