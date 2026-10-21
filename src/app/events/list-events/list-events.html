@@ -27,7 +27,7 @@
                         <td [ngClass]="event.status === 'NORMAL' ? 'normal' : 'anormal'">{{ event.status }}</td>
 
                         <td>{{ event.description }}</td>
-                        <td>{{ event.dataEvento| date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                        <td>{{ event.dataEvento | date:'dd/MM/yyyy HH:mm:ss':'+00:00'}}</td>
                         <td class="text-right">
                             <button class="icon-btn" title="Editar" (click)="prepararEdicao(event.id)">
                                 <i class="fa-solid fa-pen"></i>
