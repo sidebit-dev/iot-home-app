@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DadosEvent, DadosEventForm } from './dados-events';
 import { Observable } from 'rxjs';
@@ -11,8 +11,37 @@ export class EventService {
   private http = inject(HttpClient);
   baseUrl = 'http://localhost:3333/ewent';
 
+  // início de EVENTO EM TEMPO REAL
+  private url = 'http://localhost:3333/ewent/stream';
+  constructor(private zone: NgZone) { }
+
+  getServerSentEvents(): Observable<any> {
+    return new Observable(observer => {
+      const eventSource = new EventSource(this.url);
+
+      eventSource.onmessage = event => {
+        // O NgZone.run garante que o Angular detecte as mudanças na view imediatamente
+        this.zone.run(() => {
+          observer.next(JSON.parse(event.data));
+        });
+      };
+
+      eventSource.onerror = error => {
+        this.zone.run(() => {
+          observer.error(error);
+        });
+      };
+
+      // Limpeza ao desinscrever
+      return () => {
+        eventSource.close();
+      };
+    });
+  }
+// fim de EVENTO EM TEMPO REAL
+
   create(dados: DadosEventForm): Observable<DadosEvent> {
-    console.log('Dados enviados para criação do Event:', dados);
+    // console.log('Dados enviados para criação do Event:', dados);
     return this.http.post<DadosEvent>(this.baseUrl, dados);
   }
 
