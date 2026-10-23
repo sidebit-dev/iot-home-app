@@ -7,20 +7,30 @@ import { ListagemSensors } from './sensors/listagem-sensors/listagem-sensors';
 import { ListEvents } from './events/list-events/list-events';
 import { CreateEvent } from './events/create-event/create-event';
 import { DashboardPage } from './dashboard/dashboard-page/dashboard-page';
+import { Login } from './auth/login/login';
 
 export const routes: Routes = [
+  {
+    path: 'login',
+    component: Login,   
+  },
+  {
+    path: '',
+    redirectTo: 'login',
+     pathMatch: 'full',
+  },
   {
     path: 'paginas',
     component: Template,
     children: [
       {
         path: '',
-        redirectTo: 'dashboard', 
+        redirectTo: 'dashboard',
         pathMatch: 'full'
       },
       {
         path: 'dashboard',
-        component: DashboardPage, 
+        component: DashboardPage,
       },
       {
         path: 'create-ticket',

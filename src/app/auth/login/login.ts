@@ -38,7 +38,15 @@ export class Login implements OnInit {
     this.modo = modo;
 
     if(modo === 'cadastro'){
-      this.form.controls.nome.setValidators(Validators.required)
+      this.form.controls.nome.setValidators(Validators.required);
+    } else {
+      this.form.controls.nome.clearValidators();
     }
+
+    this.form.controls.nome.updateValueAndValidity();
+  }
+
+  handleSubmit() : void {
+    console.log(this.form.value);
   }
 }
