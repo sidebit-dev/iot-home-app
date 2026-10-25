@@ -8,20 +8,22 @@ import { ListEvents } from './events/list-events/list-events';
 import { CreateEvent } from './events/create-event/create-event';
 import { DashboardPage } from './dashboard/dashboard-page/dashboard-page';
 import { Login } from './auth/login/login';
+import { authGuard } from './auth/auth-guard';
 
 export const routes: Routes = [
   {
     path: 'login',
-    component: Login,   
+    component: Login,
   },
   {
     path: '',
     redirectTo: 'login',
-     pathMatch: 'full',
+    pathMatch: 'full',
   },
   {
     path: 'paginas',
     component: Template,
+    canActivate: [authGuard],
     children: [
       {
         path: '',
