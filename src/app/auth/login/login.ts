@@ -4,6 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { AuthService } from '../auth-service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { CadastroUsuarioForm, LoginForm } from '../dados-auth';
 
 interface AuthForm {
   nome: FormControl<string>;
@@ -28,16 +29,16 @@ export class Login implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup<AuthForm>({
-      nome: new FormControl<string>('', {nonNullable: true}),
-      login: new FormControl<string>('', {nonNullable: true, validators: Validators.required}),
-      senha: new FormControl<string>('', {nonNullable: true, validators: [Validators.required, Validators.min(4)]}),
+      nome: new FormControl<string>('', { nonNullable: true }),
+      login: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
+      senha: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.min(4)] }),
     });
   }
 
-  alterarModo(modo: 'login' | 'cadastro') : void {
+  alterarModo(modo: 'login' | 'cadastro'): void {
     this.modo = modo;
 
-    if(modo === 'cadastro'){
+    if (modo === 'cadastro') {
       this.form.controls.nome.setValidators(Validators.required);
     } else {
       this.form.controls.nome.clearValidators();
@@ -46,7 +47,47 @@ export class Login implements OnInit {
     this.form.controls.nome.updateValueAndValidity();
   }
 
-  handleSubmit() : void {
-    console.log(this.form.value);
+  handleSubmit(): void {
+    // console.log(this.form.value);
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.toast.error('Verifique os dados informados.');
+      return;
+    }
+
+    if (this.modo === 'cadastro') {
+      const dadosCadastro = this.form.value as CadastroUsuarioForm;
+      this.authService.cadastrar(dadosCadastro).subscribe({
+        next: () => this.onAuthSuccess(),
+        error: response => this.onAuthError(response)
+      });
+      return;
+    }
+
+    const dadosLogin = this.form.value as LoginForm;
+    this.authService.login(dadosLogin).subscribe({
+      next: () => this.onAuthSuccess(),
+      error: response => this.onAuthError(response)
+    });
+  }
+
+  onAuthSuccess(): void {
+    this.router.navigate(['/paginas/dashboard']);
+  }
+
+  onAuthError(response: any): void {
+    // unauthorized
+    if (response.status === 401) {
+      this.toast.error('Login ou senha inválidos.');
+      return;
+    }
+
+    // validation
+    if (response.status === 422) {
+      this.toast.error('Verifique os dados informados.');
+      return;
+    }
+
+    this.toast.error('Ocorreu um erro ao autenticar.');
   }
 }
