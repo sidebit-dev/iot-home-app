@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { AuthResponse, CadastroUsuarioForm, LoginForm } from './dados-auth';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
 
@@ -24,11 +24,13 @@ export class AuthService {
   baseUrl = 'http://localhost:3333/auth';
 
   login(dados: LoginForm): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.baseUrl}/signin`, dados);
+    return this.http.post<AuthResponse>(`${this.baseUrl}/signin`, dados)
+    .pipe(tap(response => this.salvarSessao(response)));
   }
 
   cadastrar(dados: CadastroUsuarioForm): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.baseUrl}/signup`, dados);
+    return this.http.post<AuthResponse>(`${this.baseUrl}/signup`, dados)
+    .pipe(tap(response => this.salvarSessao(response)));
   }
 
   salvarSessao(response: AuthResponse) {
