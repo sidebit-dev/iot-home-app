@@ -73,5 +73,9 @@ export class EventService {
   excluirVarios(): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/todos`);
   }
+
+  excluirTodos(ids: number[]): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}`, { body: ids });
+  }
 }
 

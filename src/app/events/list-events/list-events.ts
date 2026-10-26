@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { EventService } from '../events-service';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { DadosEvent } from '../dados-events';
 import { PageResult } from '../../common/pagination/page-result';
 import { CommonModule } from '@angular/common';
@@ -19,6 +19,7 @@ export class ListEvents implements OnInit {
   router = inject(Router);
   toast = inject(ToastrService);
   listagem$!: Observable<PageResult<DadosEvent>>;
+  listagem!: PageResult<DadosEvent>
   paginaAtual = 0;
   tamanhoPagina = 8;
 
@@ -27,7 +28,10 @@ export class ListEvents implements OnInit {
   }
 
   ListEvents() {
-    this.listagem$ = this.service.findAll(this.paginaAtual, this.tamanhoPagina);
+    this.listagem$ = this.service.findAll(this.paginaAtual, this.tamanhoPagina).pipe(tap(dadosListagem => {
+      this.listagem = dadosListagem
+
+    }));
   }
 
   deletar(id: number): void {
@@ -45,17 +49,23 @@ export class ListEvents implements OnInit {
   excluirTodos() {
     if (confirm('Tem certeza que deseja excluir os itens selecionados?')) {
 
-      this.service.excluirVarios().subscribe({
+
+      this.service.excluirTodos(this.listagem.content.map(content => content.id)).subscribe({
         next: () => {
           this.toast.success('Eventos deletados com sucesso!', 'Sucesso');
           //  alert('Produtos excluídos com sucesso!');
+
           this.ListEvents(); // Atualiza a tabela na tela
+
+          if (!this.listagem.first) {
+            this.navegar(this.listagem.number - 1);
+          }
         },
         error: (err) => {
           this.toast.error('Erro ao deletar TODOS Eventos', 'Erro');
           // console.error('Erro ao excluir produtos', err);
         }
-      });
+      })
     }
   }
 
