@@ -4,7 +4,7 @@ export class LoginForm {
 }
 
 export class CadastroUsuarioForm {
-  nome!: string;
+  name!: string;
   login!: string;
   senha!: string;
 }
@@ -13,5 +13,5 @@ export class AuthResponse {
   token!: string;
   tipo!: string;
   expiraEm!: number;
-  nome!: string;
+  name!: string;
 }

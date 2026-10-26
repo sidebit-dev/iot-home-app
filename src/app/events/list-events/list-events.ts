@@ -22,8 +22,6 @@ export class ListEvents implements OnInit {
   paginaAtual = 0;
   tamanhoPagina = 8;
 
-  idsSelecionados: number[] = []; // Array que guardará os IDs para o backend
-
   ngOnInit(): void {
     this.ListEvents();
   }
@@ -42,24 +40,15 @@ export class ListEvents implements OnInit {
         this.toast.error('Erro ao deletar evento', 'Erro');
       }
     });
-    console.log(`Deletando evento com ID: ${id}`);
   }
 
-  onAlternarSelecao(id: number, event: any) {
-    if (event.target.checked) {
-      this.idsSelecionados.push(id);
-    } else {
-      this.idsSelecionados = this.idsSelecionados.filter(item => item !== id);
-    }
-  }
-
-  excluirSelecionados() {
+  excluirTodos() {
     if (confirm('Tem certeza que deseja excluir os itens selecionados?')) {
-      this.service.excluirVarios(this.idsSelecionados).subscribe({
+
+      this.service.excluirVarios().subscribe({
         next: () => {
           this.toast.success('Eventos deletados com sucesso!', 'Sucesso');
           //  alert('Produtos excluídos com sucesso!');
-          this.idsSelecionados = []; // Limpa a seleção
           this.ListEvents(); // Atualiza a tabela na tela
         },
         error: (err) => {

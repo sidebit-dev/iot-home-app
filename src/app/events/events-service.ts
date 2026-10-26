@@ -9,10 +9,10 @@ import { PageResult } from '../common/pagination/page-result';
 })
 export class EventService {
   private http = inject(HttpClient);
-  baseUrl = 'http://localhost:3333/ewent';
+  baseUrl = 'http://localhost:3333/events';
 
   // início de EVENTO EM TEMPO REAL
-  private url = 'http://localhost:3333/ewent/stream';
+  private url = 'http://localhost:3333/events/stream';
   constructor(private zone: NgZone) { }
 
   getServerSentEvents(): Observable<any> {
@@ -38,7 +38,7 @@ export class EventService {
       };
     });
   }
-// fim de EVENTO EM TEMPO REAL
+  // fim de EVENTO EM TEMPO REAL
 
   create(dados: DadosEventForm): Observable<DadosEvent> {
     // console.log('Dados enviados para criação do Event:', dados);
@@ -70,9 +70,8 @@ export class EventService {
     return this.http.delete<void>(url);
   }
 
-  // Envia o array de números [1, 2, 3] no corpo da requisição
-  excluirVarios(ids: number[]): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}`, { body: ids });
+  excluirVarios(): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/todos`);
   }
 }
 

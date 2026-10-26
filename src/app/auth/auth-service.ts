@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 
 interface JwtPayload {
   exp?: number;
-  nome?: string;
+  name?: string;
 }
 
 @Injectable({
@@ -36,7 +36,7 @@ export class AuthService {
   salvarSessao(response: AuthResponse) {
     const token = response.token;
     localStorage.setItem(this.token_key, token);
-    localStorage.setItem(this.nome_usuario_key, response.nome);
+    localStorage.setItem(this.nome_usuario_key, response.name);
     this.agendarLogoutPorExpiracao();
   }
 
@@ -132,7 +132,7 @@ export class AuthService {
       if (!payload.exp) {
         return null;
       }
-      return payload.nome;
+      return payload.name;
     } catch {
       return null;
     }

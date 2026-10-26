@@ -5,7 +5,7 @@
             <i class="fa-solid fa-plus"></i>
             Evento TESTE
         </button>
-        <button class="btn-danger" title="Excluir" (click)="excluirSelecionados()">
+        <button class="btn-danger" title="Excluir" (click)="excluirTodos()">
             <i class="fa-solid fa-trash"></i> Excluir TODOS
         </button>
         <h2>Lista de Eventos</h2>
@@ -35,8 +35,6 @@
                             <button class="icon-btn danger" title="Excluir" (click)="deletar(event.id)">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
-                            <input type="checkbox" checked display="none"
-                                (change)="onAlternarSelecao(event.id, $event)">
                         </td>
                     </tr>
                     }
